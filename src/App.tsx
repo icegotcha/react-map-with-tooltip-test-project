@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import './App.css'
+import MapChart from './components/MapChart'
+import ReactTooltip from 'react-tooltip'
+import { Button } from 'antd'
+import geographyJson from "./json/geography.json"
+import 'antd/dist/antd.css'
+
 
 function App() {
+   const [tooltipContent, setTooltipContent] = useState<string>('')
+   const [selectedCountry, setSelectedCountry] = useState<any | null>(null)
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <div style={{margin: '0 auto', width: '80%'}}>
+          <MapChart
+            selectedCountry={selectedCountry}
+            setSelectedCountry={setSelectedCountry}
+            setTooltipContent={setTooltipContent}
+          />
+          <ReactTooltip>{tooltipContent}</ReactTooltip>
+        </div>
+        <Button
+          onClick={() => {
+            const randomCountryIndex = Math.floor(Math.random() * geographyJson.features.length)
+            setSelectedCountry(geographyJson.features[randomCountryIndex])
+          }}
+        >Random Country</Button>
       </header>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
